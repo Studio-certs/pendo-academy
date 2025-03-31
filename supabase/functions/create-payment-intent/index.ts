@@ -39,11 +39,12 @@ Deno.serve(async (req) => {
       throw new Error('Amount must be a positive number');
     }
 
-    // Get token type details with better error handling
+    // Get token type details
     const { data: tokenType, error: tokenTypeError } = await supabaseClient
       .from('token_types')
-      .select('id, name, conversion_rate')
+      .select('*')
       .eq('id', token_type_id)
+      .limit(1)
       .single();
 
     console.log('Token type query result:', { tokenType, tokenTypeError });
