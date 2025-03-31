@@ -33,20 +33,9 @@ Deno.serve(async (req) => {
     }
 
     // Check if the token type exists
-    const { data: existingTokenType, error: existingTokenTypeError } = await supabaseClient
-      .from('token_types')
-      .select('id')
-      .eq('id', token_type_id)
-      .maybeSingle();
-
-    if (existingTokenTypeError || !existingTokenType) {
-      throw new Error('Invalid token type');
-    }
-
-    // Get token type details
     const { data: tokenType, error: tokenTypeError } = await supabaseClient
       .from('token_types')
-      .select('name, conversion_rate')
+      .select('id, name, conversion_rate')
       .eq('id', token_type_id)
       .maybeSingle();
 
