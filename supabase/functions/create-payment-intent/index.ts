@@ -39,23 +39,39 @@ Deno.serve(async (req) => {
       throw new Error('Amount must be a positive number');
     }
 
-    // Get token type details
-    const { data: tokenType, error: tokenTypeError } = await supabaseClient
+    // First try a simple query to check if the token type exists
+    const { count, error: countError } = await supabaseClient
+      .from('token_types')
+      .select('*', { count: 'exact', head: true })
+      .eq('id', token_type_id);
+
+    console.log('Token type count check:', { count, countError });
+
+    if (countError) {
+      throw new Error(`Error checking token type: ${countError.message}`);
+    }
+
+    if (count === 0) {
+      throw new Error(`Token type not found with ID: ${token_type_id}`);
+    }
+
+    // Now get the token type details
+    const { data: tokenTypes, error: tokenTypeError } = await supabaseClient
       .from('token_types')
       .select('*')
-      .eq('id', token_type_id)
-      .limit(1)
-      .single();
+      .eq('id', token_type_id);
 
-    console.log('Token type query result:', { tokenType, tokenTypeError });
+    console.log('Token type query result:', { tokenTypes, tokenTypeError });
 
     if (tokenTypeError) {
       throw new Error(`Error fetching token type: ${tokenTypeError.message}`);
     }
 
-    if (!tokenType) {
+    if (!tokenTypes || tokenTypes.length === 0) {
       throw new Error(`Token type not found with ID: ${token_type_id}`);
     }
+
+    const tokenType = tokenTypes[0];
 
     // Calculate tokens based on conversion rate
     const tokens = Math.round(amount * tokenType.conversion_rate);
