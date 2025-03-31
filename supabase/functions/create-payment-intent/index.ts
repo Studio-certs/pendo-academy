@@ -22,9 +22,16 @@ Deno.serve(async (req) => {
     // Get request body
     const { amount, user_id, token_type_id } = await req.json();
 
+    // Log incoming request data
+    console.log('Request data:', { amount, user_id, token_type_id });
+
     // Validate required parameters
     if (!amount || !user_id || !token_type_id) {
-      throw new Error('Missing required parameters: amount, user_id, and token_type_id are required');
+      throw new Error(`Missing required parameters: ${[
+        !amount && 'amount',
+        !user_id && 'user_id',
+        !token_type_id && 'token_type_id'
+      ].filter(Boolean).join(', ')} required`);
     }
 
     // Validate amount is a positive number
@@ -32,15 +39,21 @@ Deno.serve(async (req) => {
       throw new Error('Amount must be a positive number');
     }
 
-    // Check if the token type exists
+    // Get token type details with better error handling
     const { data: tokenType, error: tokenTypeError } = await supabaseClient
       .from('token_types')
       .select('id, name, conversion_rate')
       .eq('id', token_type_id)
       .maybeSingle();
 
-    if (tokenTypeError || !tokenType) {
-      throw new Error('Invalid token type');
+    console.log('Token type query result:', { tokenType, tokenTypeError });
+
+    if (tokenTypeError) {
+      throw new Error(`Error fetching token type: ${tokenTypeError.message}`);
+    }
+
+    if (!tokenType) {
+      throw new Error(`Token type not found with ID: ${token_type_id}`);
     }
 
     // Calculate tokens based on conversion rate
