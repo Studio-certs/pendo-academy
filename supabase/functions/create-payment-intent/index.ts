@@ -44,7 +44,7 @@ Deno.serve(async (req) => {
       .from('token_types')
       .select('id, name, conversion_rate')
       .eq('id', token_type_id)
-      .maybeSingle();
+      .single();
 
     console.log('Token type query result:', { tokenType, tokenTypeError });
 
