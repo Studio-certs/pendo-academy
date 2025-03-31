@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { cors } from '../_shared/cors.ts';
-import Stripe from 'https://esm.sh/stripe@12.17.0?target=deno';
+import Stripe from 'npm:stripe@14.18.0';
 import { supabaseClient } from '../_shared/supabaseClient.ts';
 
 const corsHeaders = {
@@ -19,47 +19,17 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // Validate request method
-    if (req.method !== 'POST') {
-      throw new Error('Method not allowed');
-    }
-
-    // Verify JWT token
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      throw new Error('Missing authorization header');
-    }
-
-    const token = authHeader.replace('Bearer ', '');
-    const { data: { user }, error: authError } = await supabaseClient.auth.getUser(token);
-
-    if (authError || !user) {
-      throw new Error('Invalid authorization token');
-    }
-
-    // Get and validate the request body
-    const body = await req.json();
-    const { amount, user_id, token_type_id } = body;
+    // Get request body
+    const { amount, user_id, token_type_id } = await req.json();
 
     // Validate required parameters
     if (!amount || !user_id || !token_type_id) {
       throw new Error('Missing required parameters: amount, user_id, and token_type_id are required');
     }
 
-    // Verify the authenticated user matches the requested user_id
-    if (user.id !== user_id) {
-      throw new Error('Unauthorized: User ID mismatch');
-    }
-
     // Validate amount is a positive number
     if (typeof amount !== 'number' || amount <= 0) {
       throw new Error('Amount must be a positive number');
-    }
-
-    // Get Stripe key from environment variable
-    const stripeKey = Deno.env.get('STRIPE_SECRET_KEY');
-    if (!stripeKey) {
-      throw new Error('Stripe key not configured');
     }
 
     // Get token type details
@@ -73,8 +43,14 @@ Deno.serve(async (req) => {
       throw new Error('Invalid token type');
     }
 
-    // Calculate USD amount based on conversion rate
-    const usdAmount = Math.round(amount / tokenType.conversion_rate);
+    // Calculate tokens based on conversion rate
+    const tokens = Math.round(amount * tokenType.conversion_rate);
+
+    // Get Stripe key from environment variable
+    const stripeKey = Deno.env.get('STRIPE_SECRET_KEY');
+    if (!stripeKey) {
+      throw new Error('Stripe key not configured');
+    }
 
     // Initialize Stripe
     const stripe = new Stripe(stripeKey, {
@@ -91,11 +67,11 @@ Deno.serve(async (req) => {
             currency: 'aud',
             product_data: {
               name: tokenType.name,
-              description: `${amount} ${tokenType.name}`,
+              description: `${tokens} ${tokenType.name}`,
             },
-            unit_amount: 100, // $1 per token
+            unit_amount: amount * 100, // Convert to cents
           },
-          quantity: usdAmount,
+          quantity: 1,
         },
       ],
       mode: 'payment',
@@ -103,7 +79,7 @@ Deno.serve(async (req) => {
       cancel_url: `${req.headers.get('origin')}/buy-tokens`,
       metadata: {
         user_id,
-        tokens: amount.toString(),
+        tokens: tokens.toString(),
         token_type_id
       },
     });

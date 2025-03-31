@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { cors } from '../_shared/cors.ts';
-import Stripe from 'https://esm.sh/stripe@12.17.0?target=deno';
+import Stripe from 'npm:stripe@14.18.0';
 import { supabaseClient } from '../_shared/supabaseClient.ts';
 
 const corsHeaders = {
@@ -19,24 +19,6 @@ Deno.serve(async (req) => {
   }
 
   try {
-    // Validate request method
-    if (req.method !== 'POST') {
-      throw new Error('Method not allowed');
-    }
-
-    // Verify JWT token
-    const authHeader = req.headers.get('Authorization');
-    if (!authHeader) {
-      throw new Error('Missing authorization header');
-    }
-
-    const token = authHeader.replace('Bearer ', '');
-    const { data: { user }, error: authError } = await supabaseClient.auth.getUser(token);
-
-    if (authError || !user) {
-      throw new Error('Invalid authorization token');
-    }
-
     // Get and validate the request body
     const body = await req.json();
     const { session_id, user_id } = body;
@@ -44,11 +26,6 @@ Deno.serve(async (req) => {
     // Validate required parameters
     if (!session_id || !user_id) {
       throw new Error('Missing required parameters');
-    }
-
-    // Verify the authenticated user matches the requested user_id
-    if (user.id !== user_id) {
-      throw new Error('Unauthorized: User ID mismatch');
     }
 
     // Get Stripe key from environment variable

@@ -85,7 +85,7 @@ export default function Profile() {
           }
 
           // Verify the payment
-          const response = await fetch('https://ydvvokjdlqpgpasrnwtd.supabase.co/functions/v1/verify-payment', {
+          const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/verify-payment`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -98,7 +98,8 @@ export default function Profile() {
           });
 
           if (!response.ok) {
-            throw new Error('Failed to verify payment');
+            const errorData = await response.json();
+            throw new Error(errorData.error?.message || 'Failed to verify payment');
           }
 
           const { tokens } = await response.json();
@@ -736,8 +737,7 @@ export default function Profile() {
                           {course.level}
                         </span>
                       </div>
-                      <h3 className="font-semibold mb-2">{course.title}
-                      </h3>
+                      <h3 className="font-semibold mb-2">{course.title}</h3>
                       <p className="text-sm text-gray-500">
                         Enrolled on {format(new Date(enrolled_at), 'PP')}
                       </p>
