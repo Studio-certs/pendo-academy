@@ -58,9 +58,9 @@ export default function Login() {
           <div className="text-center">
             <Link to="/" className="inline-block">
               <img
-                src="https://i.imgur.com/Ql4jrZS.png"
-                alt="Pendo Academy"
-                className="h-20 w-auto mx-auto"
+                src="https://studio-bucket.s3-ap-southeast-2.amazonaws.com/image/profilePicture/original/Profile_5OupGMvDGQPM.png"
+                alt="Logo"
+                className="h-40 w-auto mx-auto"
               />
             </Link>
             <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
