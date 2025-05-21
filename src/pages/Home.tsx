@@ -110,7 +110,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 py-24 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl font-extrabold text-white sm:text-5xl md:text-6xl">
-              Welcome to Your Learning Journey
+              Welcome to Pendo Academy
             </h1>
             <p className="mt-3 max-w-md mx-auto text-xl text-white sm:text-2xl md:mt-5 md:max-w-3xl">
               Discover courses, join meetups, and connect with fellow learners.
@@ -280,13 +280,12 @@ export default function Home() {
                   </div>
                 )}
 
-                {/* Close button - Updated with more visible styling */}
+                {/* Close button */}
                 <button
                   onClick={() => setSelectedArticle(null)}
-                  className="absolute top-4 right-4 p-2 bg-black/50 rounded-full hover:bg-black/70 transition-colors"
-                  aria-label="Close"
+                  className="absolute top-4 right-4 p-2 bg-white rounded-full hover:bg-gray-100 transition-colors"
                 >
-                  <X className="w-5 h-5 text-white" />
+                  <X className="w-5 h-5 text-gray-600" />
                 </button>
 
                 {/* Category badge */}
@@ -327,17 +326,6 @@ export default function Home() {
                   <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
                     {selectedArticle.content}
                   </p>
-                </div>
-
-                {/* Close button at the bottom */}
-                <div className="mt-6 flex justify-end">
-                  <button
-                    onClick={() => setSelectedArticle(null)}
-                    className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                  >
-                    <X className="w-4 h-4 mr-2" />
-                    Close
-                  </button>
                 </div>
               </div>
             </div>

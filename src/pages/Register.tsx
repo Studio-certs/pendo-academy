@@ -35,9 +35,9 @@ export default function Register() {
           <div className="text-center">
             <Link to="/" className="inline-block">
               <img
-                src="https://studio-bucket.s3-ap-southeast-2.amazonaws.com/image/profilePicture/original/Profile_5OupGMvDGQPM.png"
-                alt="Logo"
-                className="h-40 w-auto mx-auto"
+                src="https://i.imgur.com/Ql4jrZS.png"
+                alt="Pendo Academy"
+                className="h-20 w-auto mx-auto"
               />
             </Link>
             <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
@@ -118,13 +118,6 @@ export default function Register() {
                   />
                 </div>
               </div>
-            </div>
-
-            <div className="text-sm">
-              By creating an account, you agree to our{' '}
-              <Link to="/terms-and-conditions" className="font-medium text-blue-600 hover:text-blue-500">
-                Terms and Conditions
-              </Link>
             </div>
 
             <button
