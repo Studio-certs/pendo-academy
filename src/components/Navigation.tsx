@@ -37,7 +37,7 @@ export default function Navigation() {
             <div className="hidden md:flex items-center justify-between w-full">
               <Link to="/" className="flex items-center">
                 <UserAvatar
-                  src="https://studio-bucket.s3-ap-southeast-2.amazonaws.com/image/profilePicture/original/Profile_hksQdQJp7c64.png"
+                  src="https://rgltgdklkrksczphrupu.supabase.co/storage/v1/object/public/images//PENDO-ACADEMY.png"
                   alt="Logo"
                   size="sm"
                 />
