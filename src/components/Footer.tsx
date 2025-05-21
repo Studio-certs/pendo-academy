@@ -88,7 +88,7 @@ export default function Footer() {
 
         <div className="mt-12 pt-8 border-t border-gray-200">
           <p className="text-center text-gray-500 text-sm">
-            &copy; {currentYear} Learning Platform. All rights reserved.
+            &copy;  Pendo Health Australia. All Rights Reserved {currentYear}
           </p>
         </div>
       </div>
