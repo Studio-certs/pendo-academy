@@ -59,10 +59,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link to="/privacy-policy" className="text-gray-600 hover:text-blue-600">Privacy Policy</Link>
-              </li>
-              <li>
+                {/*</li>
+              <!--li>
                 <Link to="/cookie-policy" className="text-gray-600 hover:text-blue-600">Cookie Policy</Link>
-              </li>
+              </li>*/}
             </ul>
           </div>
 
