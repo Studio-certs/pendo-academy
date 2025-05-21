@@ -12,7 +12,7 @@ export default function UserAvatar({ src, alt, size = 'md', className = '' }: Us
   const sizeClasses = {
     sm: 'w-8 h-8',
     md: 'w-10 h-10',
-    lg: 'w-24 h-16',
+    lg: 'w-24 h-auto',
     xl: 'w-32 h-32'
   };
 
