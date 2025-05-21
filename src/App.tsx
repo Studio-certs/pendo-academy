@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Navigation from './components/Navigation';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -19,19 +20,21 @@ import ModuleEditor from './pages/admin/ModuleEditor';
 import CourseDetailsAdmin from './pages/admin/crm/CourseDetails';
 import UpdatePassword from './pages/UpdatePassword';
 import BuyTokens from './pages/BuyTokens';
+import TermsAndConditions from './pages/TermsAndConditions';
 
 export default function App() {
   return (
     <Router>
       <AuthProvider>
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 flex flex-col">
           <Navigation />
-          <main className="pt-16">
+          <main className="pt-16 flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/update-password" element={<UpdatePassword />} />
+              <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               <Route path="/profile" element={
                 <ProtectedRoute>
                   <Profile />
@@ -79,6 +82,7 @@ export default function App() {
               } />
             </Routes>
           </main>
+          <Footer />
         </div>
       </AuthProvider>
     </Router>

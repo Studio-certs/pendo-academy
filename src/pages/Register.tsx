@@ -120,6 +120,13 @@ export default function Register() {
               </div>
             </div>
 
+            <div className="text-sm">
+              By creating an account, you agree to our{' '}
+              <Link to="/terms-and-conditions" className="font-medium text-blue-600 hover:text-blue-500">
+                Terms and Conditions
+              </Link>
+            </div>
+
             <button
               type="submit"
               disabled={loading}

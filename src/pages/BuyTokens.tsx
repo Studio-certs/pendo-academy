@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Wallet, AlertCircle, Shield, CreditCard, Zap, CheckCircle2, Gift, Coins } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface TokenType {
   id: string;
@@ -262,7 +263,10 @@ export default function BuyTokens() {
             )}
           </button>
           <p className="mt-4 text-sm text-gray-500">
-            By proceeding with the purchase, you agree to our terms and conditions
+            By proceeding with the purchase, you agree to our{' '}
+            <Link to="/terms-and-conditions" className="text-blue-600 hover:underline">
+              Terms and Conditions
+            </Link>
           </p>
         </div>
       </div>
