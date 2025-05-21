@@ -58,7 +58,7 @@ export default function Login() {
           <div className="text-center">
             <Link to="/" className="inline-block">
               <img
-                src="https://studio-bucket.s3-ap-southeast-2.amazonaws.com/image/profilePicture/original/Profile_5OupGMvDGQPM.png"
+                src="https://rgltgdklkrksczphrupu.supabase.co/storage/v1/object/public/images//PENDO-ACADEMY.png"
                 alt="Logo"
                 className="h-40 w-auto mx-auto"
               />
