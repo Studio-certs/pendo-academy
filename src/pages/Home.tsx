@@ -280,10 +280,10 @@ export default function Home() {
                   </div>
                 )}
 
-                {/* Close button */}
+                {/* Close button - Updated with more visible styling */}
                 <button
                   onClick={() => setSelectedArticle(null)}
-                  className="absolute top-4 right-4 p-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors"
+                  className="absolute top-4 right-4 p-2 bg-black/50 rounded-full hover:bg-black/70 transition-colors"
                   aria-label="Close"
                 >
                   <X className="w-5 h-5 text-white" />
