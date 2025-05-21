@@ -59,7 +59,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link to="/privacy-policy" className="text-gray-600 hover:text-blue-600">Privacy Policy</Link>
-            
+              </li>
             </ul>
           </div>
 
@@ -85,7 +85,7 @@ export default function Footer() {
 
         <div className="mt-12 pt-8 border-t border-gray-200">
           <p className="text-center text-gray-500 text-sm">
-            &copy;  Pendo Health Australia. All Rights Reserved {currentYear}
+            &copy;  Pendo Health Australia. All Rights Reserved 
           </p>
         </div>
       </div>
