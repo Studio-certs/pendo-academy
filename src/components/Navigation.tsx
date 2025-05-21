@@ -28,7 +28,7 @@ export default function Navigation() {
                 <UserAvatar
                   src="https://rgltgdklkrksczphrupu.supabase.co/storage/v1/object/public/images//PENDO-ACADEMY.png"
                   alt="Logo"
-                  size="sm"
+                  size="md"
                 />
               </Link>
             </div>
@@ -39,7 +39,7 @@ export default function Navigation() {
                 <UserAvatar
                   src="https://rgltgdklkrksczphrupu.supabase.co/storage/v1/object/public/images//PENDO-ACADEMY.png"
                   alt="Logo"
-                  size="sm"
+                  size="lg"
                 />
               </Link>
               <div className="flex items-center space-x-4">
