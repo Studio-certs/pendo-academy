@@ -21,6 +21,7 @@ import CourseDetailsAdmin from './pages/admin/crm/CourseDetails';
 import UpdatePassword from './pages/UpdatePassword';
 import BuyTokens from './pages/BuyTokens';
 import TermsAndConditions from './pages/TermsAndConditions';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/update-password" element={<UpdatePassword />} />
               <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/profile" element={
                 <ProtectedRoute>
                   <Profile />

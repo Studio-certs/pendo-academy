@@ -41,6 +41,9 @@ export default function CookieConsent() {
                 We use cookies to enhance your experience and ensure our platform functions correctly. By continuing to use our site, you agree to our use of cookies and our{' '}
                 <Link to="/terms-and-conditions" className="text-blue-600 hover:underline">
                   Terms and Conditions
+                </Link> and{' '}
+                <Link to="/privacy-policy" className="text-blue-600 hover:underline">
+                  Privacy Policy
                 </Link>.
               </p>
             </div>
