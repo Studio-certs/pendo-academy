@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Home, Users, BookOpen, User, LogOut, GraduationCap } from 'lucide-react';
+import UserAvatar from './UserAvatar';
 
 export default function Navigation() {
   const { user, isAdmin, signOut } = useAuth();
@@ -24,10 +25,10 @@ export default function Navigation() {
             {/* Mobile: Only Logo */}
             <div className="md:hidden w-full flex justify-center">
               <Link to="/" className="flex items-center">
-                <img
-                  src="https://i.imgur.com/Ql4jrZS.png"
-                  alt="Pendo Academy"
-                  className="h-10 w-auto"
+                <UserAvatar
+                  src="https://studio-bucket.s3-ap-southeast-2.amazonaws.com/image/profilePicture/original/Profile_hksQdQJp7c64.png"
+                  alt="Logo"
+                  size="sm"
                 />
               </Link>
             </div>
@@ -35,10 +36,10 @@ export default function Navigation() {
             {/* Desktop: Logo and Navigation */}
             <div className="hidden md:flex items-center justify-between w-full">
               <Link to="/" className="flex items-center">
-                <img
-                  src="https://i.imgur.com/Ql4jrZS.png"
-                  alt="Pendo Academy"
-                  className="h-10 w-auto"
+                <UserAvatar
+                  src="https://studio-bucket.s3-ap-southeast-2.amazonaws.com/image/profilePicture/original/Profile_hksQdQJp7c64.png"
+                  alt="Logo"
+                  size="sm"
                 />
               </Link>
               <div className="flex items-center space-x-4">
