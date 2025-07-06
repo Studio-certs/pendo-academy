@@ -16,16 +16,13 @@ export default function Footer() {
               Empowering learners worldwide with quality education and community support.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-gray-500">
+              <a href="https://m.facebook.com/pendoacademy/" className="text-gray-400 hover:text-gray-500">
                 <Facebook className="h-5 w-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-gray-500">
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-gray-500">
+              <a href="https://www.instagram.com/pendoacademy?igsh=aXMwb2ZkcW03a29k" className="text-gray-400 hover:text-gray-500">
                 <Instagram className="h-5 w-5" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-gray-500">
+              <a href="https://www.linkedin.com/company/pendo-academy/" className="text-gray-400 hover:text-gray-500">
                 <Linkedin className="h-5 w-5" />
               </a>
             </div>
@@ -74,10 +71,6 @@ export default function Footer() {
               <li className="flex items-center">
                 <Phone className="h-5 w-5 text-gray-400 mr-2" />
                 <span className="text-gray-600">+1 (555) 123-4567</span>
-              </li>
-              <li className="flex items-center">
-                <Mail className="h-5 w-5 text-gray-400 mr-2" />
-                <span className="text-gray-600">support@learningplatform.com</span>
               </li>
             </ul>
           </div>
