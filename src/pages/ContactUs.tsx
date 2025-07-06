@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { User, Mail, Phone, MessageSquare, Loader2, Send, AlertCircle } from 'lucide-react';
+import emailjs from '@emailjs/browser';
 import { supabase } from '../lib/supabase';
 
 export default function ContactUs() {
@@ -17,22 +18,57 @@ export default function ContactUs() {
     setLoading(true);
     setError(null);
 
-    const { error: submissionError } = await supabase
-      .from('contact_submissions')
-      .insert({
-        full_name: fullName,
-        email,
-        phone,
-        inquiry,
-      });
+    try {
+      // Step 1: Insert submission into Supabase
+      const { error: submissionError } = await supabase
+        .from('contact_submissions')
+        .insert({
+          full_name: fullName,
+          email,
+          phone,
+          inquiry,
+        });
 
-    setLoading(false);
+      if (submissionError) {
+        // If Supabase insert fails, we stop and show an error.
+        throw submissionError;
+      }
 
-    if (submissionError) {
-      console.error('Error submitting form:', submissionError);
-      setError('There was an error sending your message. Please try again later.');
-    } else {
+      // Step 2: Send email notification via EmailJS
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_CONTACT_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+      if (serviceId && templateId && publicKey) {
+        const templateParams = {
+          to_email: 'study@pendoacademy.com',
+          subject: 'New Contact Us Inquiry',
+          to_name: 'Pendo Team',
+          message: `You have a new contact us Inquiry. Please contact them at the earliest. \n
+          
+Full Name: ${fullName} \n
+Email: ${email} \n
+Phone: ${phone || 'Not provided'} \n
+Inquiry:
+${inquiry} \n`,
+        };
+
+        await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      } else {
+        // Log an error for developers if env vars are missing, but don't block the user.
+        // The primary action (saving the inquiry) was successful.
+        console.error("EmailJS environment variables are not fully configured. Email not sent.");
+      }
+
+      // If both steps are successful (or email sending is skipped gracefully), show success.
       setSubmitted(true);
+
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred.';
+      console.error('Error submitting form:', errorMessage);
+      setError('There was an error sending your message. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -189,7 +225,7 @@ export default function ContactUs() {
       <div className="hidden lg:block relative w-0 flex-1">
         <img
           className="absolute inset-0 h-full w-full object-cover"
-          src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1260&amp;h=750&amp;dpr=2"
+          src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&amp;amp;cs=tinysrgb&amp;amp;w=1260&amp;amp;h=750&amp;amp;dpr=2"
           alt="People working in an office"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-blue-600 to-blue-800 mix-blend-multiply opacity-50" />
