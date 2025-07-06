@@ -1,9 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Mail, Phone, MapPin, Facebook, Instagram, Linkedin } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const navigate = useNavigate();
 
   return (
     <footer className="bg-white border-t border-gray-200 mt-auto">
@@ -52,7 +53,7 @@ export default function Footer() {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/terms-and-conditions" className="text-gray-600 hover:text-blue-600">Terms & Conditions</Link>
+                <Link to="/terms-and-conditions" className="text-gray-600 hover:text-blue-600">Terms &amp; Conditions</Link>
               </li>
               <li>
                 <Link to="/privacy-policy" className="text-gray-600 hover:text-blue-600">Privacy Policy</Link>
@@ -73,12 +74,21 @@ export default function Footer() {
                 <span className="text-gray-600">1800 473 636</span>
               </li>
             </ul>
+            <div className="mt-4">
+              <button
+                className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200"
+                onClick={() => navigate('/contact-us')}
+              >
+                <Mail className="h-5 w-5 mr-2" />
+                Get In Touch
+              </button>
+            </div>
           </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-200">
           <p className="text-center text-gray-500 text-sm">
-            &copy;  Pendo Health Australia. All Rights Reserved 
+            &amp;copy;  Pendo Health Australia. All Rights Reserved 
           </p>
         </div>
       </div>
