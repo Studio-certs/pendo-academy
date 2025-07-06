@@ -3,7 +3,7 @@ import { Link, Routes, Route } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { 
   FileText, Users, Calendar, BookOpen, LayoutGrid, Award,
-  ChevronRight, TrendingUp, DollarSign, Star, UserCheck, Zap, Coins
+  ChevronRight, TrendingUp, DollarSign, Star, UserCheck, Zap, Coins, MailQuestion
 } from 'lucide-react';
 import DashboardHome from './DashboardHome';
 import NewsManagement from './NewsManagement';
@@ -13,6 +13,7 @@ import CRMManagement from './CRMManagement';
 import BadgeManagement from './BadgeManagement';
 import MintBadge from './MintBadge';
 import TokenTypeManagement from './TokenTypeManagement';
+import ContactSubmissions from './ContactSubmissions';
 
 const menuItems = [
   { path: '/admin', icon: LayoutGrid, label: 'Dashboard' },
@@ -22,7 +23,8 @@ const menuItems = [
   { path: '/admin/courses', icon: BookOpen, label: 'Courses' },
   { path: '/admin/badges', icon: Award, label: 'Badges' },
   { path: '/admin/mint-badge', icon: Zap, label: 'Mint Badge' },
-  { path: '/admin/token-types', icon: Coins, label: 'Token Types' }
+  { path: '/admin/token-types', icon: Coins, label: 'Token Types' },
+  { path: '/admin/contact-submissions', icon: MailQuestion, label: 'Contact Submissions' }
 ];
 
 export default function AdminDashboard() {
@@ -127,6 +129,7 @@ export default function AdminDashboard() {
               <Route path="badges" element={<BadgeManagement />} />
               <Route path="mint-badge" element={<MintBadge />} />
               <Route path="token-types" element={<TokenTypeManagement />} />
+              <Route path="contact-submissions" element={<ContactSubmissions />} />
             </Routes>
           </div>
         </main>
