@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { User, Mail, Phone, MessageSquare, Loader2, Send } from 'lucide-react';
+import { User, Mail, Phone, MessageSquare, Loader2, Send, AlertCircle } from 'lucide-react';
+import { supabase } from '../lib/supabase';
 
 export default function ContactUs() {
   const [fullName, setFullName] = useState('');
@@ -9,16 +10,30 @@ export default function ContactUs() {
   const [inquiry, setInquiry] = useState('');
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    // Placeholder for submission logic (e.g., API call)
-    console.log({ fullName, email, phone, inquiry });
-    // Simulate network request
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    setError(null);
+
+    const { error: submissionError } = await supabase
+      .from('contact_submissions')
+      .insert({
+        full_name: fullName,
+        email,
+        phone,
+        inquiry,
+      });
+
     setLoading(false);
-    setSubmitted(true);
+
+    if (submissionError) {
+      console.error('Error submitting form:', submissionError);
+      setError('There was an error sending your message. Please try again later.');
+    } else {
+      setSubmitted(true);
+    }
   }
 
   return (
@@ -61,6 +76,18 @@ export default function ContactUs() {
               </div>
 
               <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                {error && (
+                  <div className="rounded-md bg-red-50 p-4">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <AlertCircle className="h-5 w-5 text-red-400" aria-hidden="true" />
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm font-medium text-red-800">{error}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <div className="space-y-4">
                   {/* Full Name */}
                   <div>
