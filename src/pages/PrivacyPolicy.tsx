@@ -32,15 +32,10 @@ export default function PrivacyPolicy() {
 
             <h2 className="text-xl font-semibold mt-6 mb-3">Introduction</h2>
             <p>
-              At Pendo Academy Website OR Pendo Health Pty Ltd, trading as Pendo Academy
-              OR Pendo Health Pty Ltd ("he website or the company," "we," "our," and "us"), we
-              are committed to protecting your privacy. We comply with the Australian Privacy
-              Principles outlined in the Privacy Act 1988 (Cth) ("Privacy Act").
+              At Pendo Academy Website or Pendo Health Pty Ltd, trading as Pendo Academy or Pendo Health Pty Ltd ("Pendo Academy," “Pendo Health Pty Ltd”, “The Company”, “The Website”, "we," "our," and "us"), we are committed to protecting your privacy. We comply with the Australian Privacy Principles outlined in the Privacy Act 1988 (Cth) ("Privacy Act").
             </p>
             <p>
-              This privacy policy ("Privacy Policy") explains our information collection and privacy
-              practices concerning our current and future services, including online applications
-              ("Services"). It is designed to help you understand:
+              This privacy policy ("Privacy Policy") explains our information collection and privacy practices concerning our current and future services, including online applications ("Services"). It is designed to help you understand:
             </p>
             <ul className="list-disc pl-6 mb-4">
               <li>How we manage your personal information.</li>

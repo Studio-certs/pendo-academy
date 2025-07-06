@@ -22,38 +22,19 @@ export default function TermsAndConditions() {
           <div className="prose max-w-none">
             <p className="text-sm text-gray-500 mb-6">Last Updated: May 2025</p>
 
-            <p>
-              Pendo Academy's website is owned and operated by Pendo Health Pty Ltd, with an
-              Australian Business Number (ABN) of 17 639 720 433. Pendo Health Pty Ltd is a
-              registered entity in Australia, and its ABN is 17 639 720 433. Please read these
-              Terms carefully, and contact us if you have any questions, requests for information,
-              or complaints. By clicking "I accept" (or for those who have not yet created an
-              account, by using our Services), you agree to be bound by these Terms, including
-              the policies referenced in these Terms. By using our Services, you agree to be
-              bound by these Terms, including the policies referenced in these Terms.
-            </p>
-
             <div className="bg-gray-100 p-4 my-6 rounded-lg border-l-4 border-gray-400">
+              <h2 className="text-xl font-semibold mt-6 mb-3">Website User Agreement</h2>
               <p className="font-bold mb-2">
-                THESE TERMS INCLUDE AN ARBITRATION AGREEMENT, JURY TRIAL
-                WAIVER AND CLASS ACTION WAIVER THAT APPLY TO ALL CLAIMS
-                BROUGHT AGAINST THIS WEBSITE. PLEASE READ THEM CAREFULLY AS
-                THEY AFFECT YOUR LEGAL RIGHTS:
+                Pendo Academy's website is owned and operated by Pendo Health Pty Ltd, with an Australian Business Number (ABN) of 17 639 720 433 (Collectively, “Pendo Academy," “Pendo Health Pty Ltd”, “The Company”, “The Website”, "we," "our," and "us"). 
               </p>
               <p>
-                (1) YOU WILL ONLY BE PERMITTED TO
-                PURSUE DISPUTES OR CLAIMS AND SEEK RELIEF AGAINST US ON AN
-                INDIVIDUAL BASIS, NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY CLASS
-                OR REPRESENTATIVE ACTION OR PROCEEDING AND YOU WAIVE YOUR
-                RIGHT TO PARTICIPATE IN A CLASS ACTION LAWSUIT OR CLASS-WIDE
-                ARBITRATION; AND
+                By accessing this website, you agree to comply with and be bound by the terms and conditions listed below. If you do not agree, you must leave the site. The website serves as an advertisement for the company, offering information for general purposes only without making any guarantees. Content may change at any time without prior notice.
               </p>
               <p>
-                (2) YOU ARE WAIVING YOUR RIGHT TO PURSUE
-                DISPUTES OR CLAIMS AND SEEK RELIEF IN A COURT OF LAW AND TO HAVE
-                A JURY TRIAL. THE TERMS OF THE ARBITRATION AGREEMENT SHALL NOT
-                APPLY IF UNENFORCEABLE UNDER THE LAWS OF THE COUNTRY IN WHICH
-                YOU RESIDE.
+                Unauthorized use of the website may result in legal action, including claims for damages or criminal charges. The website and its affiliates reserve the right to deny service to users or reject requests for information made through the site.
+              </p>
+              <p>
+                All intellectual property rights associated with this website are protected. You are not permitted to copy, share, or exploit any content without written permission. Such permission can be requested via the ‘Contact Us’ form.
               </p>
             </div>
 
