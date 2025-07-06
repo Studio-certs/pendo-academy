@@ -66,11 +66,11 @@ export default function Footer() {
             <ul className="space-y-2">
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 text-gray-400 mr-2 mt-0.5" />
-                <span className="text-gray-600">123 Learning Street, Education City, 2000</span>
+                <span className="text-gray-600">Imperial College, House:212 Hoddle Street, Abottsford 3067, VIC.</span>
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 text-gray-400 mr-2" />
-                <span className="text-gray-600">+1 (555) 123-4567</span>
+                <span className="text-gray-600">1800 473 636</span>
               </li>
             </ul>
           </div>
