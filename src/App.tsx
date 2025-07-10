@@ -15,10 +15,12 @@ import Courses from './pages/Courses';
 import CourseDetails from './pages/CourseDetails';
 import ModuleView from './pages/ModuleView';
 import MyLearning from './pages/MyLearning';
+import CourseApplication from './pages/CourseApplication';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import ModuleEditor from './pages/admin/ModuleEditor';
 import CourseDetailsAdmin from './pages/admin/crm/CourseDetails';
 import UpdatePassword from './pages/UpdatePassword';
+import ApplicationDetails from './pages/admin/ApplicationDetails';
 import BuyTokens from './pages/BuyTokens';
 import TermsAndConditions from './pages/TermsAndConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -59,6 +61,11 @@ export default function App() {
               <Route path="/meetups/:id" element={<MeetupDetails />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/courses/:id" element={<CourseDetails />} />
+              <Route path="/courses/:courseId/apply" element={
+                <ProtectedRoute>
+                  <CourseApplication />
+                </ProtectedRoute>
+              } />
               <Route path="/courses/:courseId/modules/:moduleId" element={
                 <ProtectedRoute>
                   <ModuleView />
@@ -77,6 +84,11 @@ export default function App() {
               <Route path="/admin/courses/:courseId/modules/:moduleId" element={
                 <ProtectedRoute adminOnly>
                   <ModuleEditor />
+                </ProtectedRoute>
+              } />
+              <Route path="/admin/applications/:id" element={
+                <ProtectedRoute adminOnly>
+                  <ApplicationDetails />
                 </ProtectedRoute>
               } />
               <Route path="/admin/courses/:id/details" element={

@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
-import { 
-  Clock, BookOpen, Play, FileText, HelpCircle, Check, ChevronLeft, ChevronRight,
-  AlertCircle, Users, Star, GraduationCap, Wallet, BookMarked
-} from 'lucide-react';
+import { Clock, BookOpen, Play, FileText, HelpCircle, Check, ChevronLeft, ChevronRight, AlertCircle, Users, Star, GraduationCap, Wallet, BookMarked, FileText as FileText2 } from 'lucide-react';
 import UserAvatar from '../components/UserAvatar';
 
 interface Course {
@@ -153,52 +150,21 @@ export default function CourseDetails() {
   async function handleEnrollment() {
     if (!user || !course) return;
 
-    setEnrolling(true);
-    setError(null);
-    try {
-      if (isEnrolled) {
-        setError('You are already enrolled or your enrollment is pending.');
-        return;
-      }
-
-      if (userTokens < course.price) {
-        navigate('/buy-tokens');
-        return;
-      }
-
-      // Deduct tokens and create enrollment
-      const { error: walletError } = await supabase
-        .from('user_wallets')
-        .update({ tokens: userTokens - course.price })
-        .eq('user_id', user.id);
-
-      if (walletError) throw walletError;
-
-      const { error: enrollmentError } = await supabase
-        .from('course_enrollments')
-        .insert({
-          course_id: course.id,
-          user_id: user.id,
-          progress: 0,
-          status: 'pending' // Set status to pending on new enrollment
-        });
-
-      if (enrollmentError) throw enrollmentError;
-
-      setEnrollmentStatus('pending');
-      setUserTokens(prev => prev - course.price);
-      setSuccess('Enrollment successful! Awaiting confirmation.');
-      
-    } catch (error: any) {
-      console.error('Error during enrollment:', error);
-      setError(error.message || 'Failed to enroll in course');
-    } finally {
-      setEnrolling(false);
-      setTimeout(() => {
-        setSuccess(null);
-        setError(null);
-      }, 5000);
+    // Check if already enrolled
+    if (isEnrolled) {
+      setError('You are already enrolled or your enrollment is pending.');
+      setTimeout(() => setError(null), 5000);
+      return;
     }
+    
+    // Check if user has enough tokens
+    if (userTokens < course.price) {
+      navigate('/buy-tokens');
+      return;
+    }
+    
+    // Redirect to application form
+    navigate(`/courses/${course.id}/apply`);
   }
 
   if (loading) {
@@ -414,9 +380,9 @@ export default function CourseDetails() {
                         ? 'Processing...'
                         : isEnrolled
                           ? enrollmentStatus === 'pending'
-                            ? 'Paid. Awaiting Confirmation'
+                            ? 'Application Submitted. Awaiting Approval'
                             : 'Enrolled'
-                          : 'Enroll in Course'}
+                          : 'Apply for Course'}
                     </button>
                   </>
                 ) : (
@@ -424,7 +390,7 @@ export default function CourseDetails() {
                     to="/login"
                     className="block w-full py-3 px-4 bg-blue-600 text-white rounded-lg font-medium text-center hover:bg-blue-700 hover:text-white transition-colors duration-200"
                   >
-                    Log in to Enroll
+                    Log in to Apply
                   </Link>
                 )}
               </div>

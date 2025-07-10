@@ -1,10 +1,7 @@
 import React from 'react';
 import { Link, Routes, Route } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { 
-  FileText, Users, Calendar, BookOpen, LayoutGrid, Award,
-  ChevronRight, TrendingUp, DollarSign, Star, UserCheck, Zap, Coins, MailQuestion
-} from 'lucide-react';
+import { FileText, Users, Calendar, BookOpen, LayoutGrid, Award, ChevronRight, TrendingUp, DollarSign, Star, UserCheck, Zap, Coins, MailQuestion, FileText as FileText2 } from 'lucide-react';
 import DashboardHome from './DashboardHome';
 import NewsManagement from './NewsManagement';
 import MeetupManagement from './MeetupManagement';
@@ -24,6 +21,7 @@ const menuItems = [
   { path: '/admin/badges', icon: Award, label: 'Badges' },
   { path: '/admin/mint-badge', icon: Zap, label: 'Mint Badge' },
   { path: '/admin/token-types', icon: Coins, label: 'Token Types' },
+  { path: '/admin/crm/applications', icon: FileText2, label: 'Applications' },
   { path: '/admin/contact-submissions', icon: MailQuestion, label: 'Contact Submissions' }
 ];
 

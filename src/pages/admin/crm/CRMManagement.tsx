@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Users, Award, BookOpen, BarChart, List, GraduationCap, FileText } from 'lucide-react';
-import UserManagement from './crm/UserManagement';
-import BadgeAssignment from './crm/BadgeAssignment';
-import CourseProgress from './crm/CourseProgress';
-import CourseEnrollments from './crm/CourseEnrollments';
-import Analytics from './crm/Analytics';
-import TransactionManagement from './TransactionManagement';
-import ApplicationManagement from './crm/ApplicationManagement';
+import UserManagement from './UserManagement';
+import BadgeAssignment from './BadgeAssignment';
+import CourseProgress from './CourseProgress';
+import CourseEnrollments from './CourseEnrollments';
+import Analytics from './Analytics';
+import TransactionManagement from '../TransactionManagement';
+import ApplicationManagement from './ApplicationManagement';
 
 type Tab = 'users' | 'badges' | 'progress' | 'analytics' | 'transactions' | 'enrollments' | 'applications';
 
