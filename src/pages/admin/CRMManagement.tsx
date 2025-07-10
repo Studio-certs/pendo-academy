@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-    import { Users, Award, BookOpen, BarChart, List } from 'lucide-react';
+    import { Users, Award, BookOpen, BarChart, List, GraduationCap } from 'lucide-react';
     import UserManagement from './crm/UserManagement';
     import BadgeAssignment from './crm/BadgeAssignment';
     import CourseProgress from './crm/CourseProgress';
+    import CourseEnrollments from './crm/CourseEnrollments';
     import Analytics from './crm/Analytics';
     import TransactionManagement from './TransactionManagement';
 
-    type Tab = 'users' | 'badges' | 'progress' | 'analytics' | 'transactions';
+    type Tab = 'users' | 'badges' | 'progress' | 'analytics' | 'transactions' | 'enrollments';
 
     export default function CRMManagement() {
       const [activeTab, setActiveTab] = useState<Tab>('users');
@@ -15,6 +16,7 @@ import React, { useState } from 'react';
         { id: 'users', label: 'User Management', icon: Users },
         { id: 'badges', label: 'Badge Assignment', icon: Award },
         { id: 'progress', label: 'Course Progress', icon: BookOpen },
+        { id: 'enrollments', label: 'Course Enrollments', icon: GraduationCap },
         { id: 'analytics', label: 'Analytics', icon: BarChart },
         { id: 'transactions', label: 'Transactions', icon: List },
       ] as const;
@@ -50,6 +52,7 @@ import React, { useState } from 'react';
             {activeTab === 'users' && <UserManagement />}
             {activeTab === 'badges' && <BadgeAssignment />}
             {activeTab === 'progress' && <CourseProgress />}
+            {activeTab === 'enrollments' && <CourseEnrollments />}
             {activeTab === 'analytics' && <Analytics />}
             {activeTab === 'transactions' && <TransactionManagement />}
           </div>
