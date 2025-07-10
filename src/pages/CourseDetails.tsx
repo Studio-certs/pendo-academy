@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
-import { Clock, BookOpen, Play, FileText, HelpCircle, Check, ChevronLeft, ChevronRight, AlertCircle, Users, Star, GraduationCap, Wallet, BookMarked, FileText as FileText2 } from 'lucide-react';
+import { Clock, BookOpen, Play, FileText, Image as ImageIcon, HelpCircle, Check, ChevronLeft, ChevronRight, AlertCircle, Users, Star, GraduationCap, Wallet, BookMarked, FileText as FileText2 } from 'lucide-react';
 import UserAvatar from '../components/UserAvatar';
 
 interface Course {
@@ -39,6 +39,12 @@ interface ContentItem {
 }
 
 type EnrollmentStatus = 'pending' | 'confirmed';
+type ApplicationStatus = 'pending' | 'approved' | 'rejected';
+
+interface Application {
+  id: string;
+  status: ApplicationStatus;
+}
 
 export default function CourseDetails() {
   const { id } = useParams<{ id: string }>();
@@ -47,6 +53,7 @@ export default function CourseDetails() {
   const [course, setCourse] = useState<Course | null>(null);
   const [modules, setModules] = useState<Module[]>([]);
   const [enrollmentStatus, setEnrollmentStatus] = useState<EnrollmentStatus | null>(null);
+  const [application, setApplication] = useState<Application | null>(null);
   const [loading, setLoading] = useState(true);
   const [enrolling, setEnrolling] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -59,6 +66,7 @@ export default function CourseDetails() {
   });
 
   const isEnrolled = !!enrollmentStatus;
+  const hasPendingApplication = application?.status === 'pending';
 
   useEffect(() => {
     async function fetchCourseData() {
@@ -135,6 +143,18 @@ export default function CourseDetails() {
 
           setEnrollmentStatus(enrollmentResponse.data?.status || null);
           setUserTokens(walletResponse.data?.tokens || 0);
+          
+          // Check if user has a pending application for this course
+          const { data: applicationData, error: applicationError } = await supabase
+            .from('course_applications')
+            .select('id, status')
+            .eq('course_id', id)
+            .eq('user_id', user.id)
+            .maybeSingle();
+            
+          if (!applicationError && applicationData) {
+            setApplication(applicationData);
+          }
         }
       } catch (error) {
         console.error('Error fetching course data:', error);
@@ -153,6 +173,13 @@ export default function CourseDetails() {
     // Check if already enrolled
     if (isEnrolled) {
       setError('You are already enrolled or your enrollment is pending.');
+      setTimeout(() => setError(null), 5000);
+      return;
+    }
+    
+    // Check if user has a pending application
+    if (application?.status === 'pending') {
+      setError('You already have a pending application for this course.');
       setTimeout(() => setError(null), 5000);
       return;
     }
@@ -362,7 +389,7 @@ export default function CourseDetails() {
                     )}
                     <button
                       onClick={handleEnrollment}
-                      disabled={enrolling || isEnrolled}
+                      disabled={enrolling || isEnrolled || hasPendingApplication}
                       className={`
                         w-full py-3 px-4 rounded-lg font-medium text-center
                         transition-colors duration-200
@@ -372,7 +399,9 @@ export default function CourseDetails() {
                             ? enrollmentStatus === 'pending'
                               ? 'bg-yellow-500 text-white'
                               : 'bg-green-600 text-white'
-                            : 'bg-blue-600 text-white hover:bg-blue-700'
+                            : hasPendingApplication
+                              ? 'bg-amber-500 text-white'
+                              : 'bg-blue-600 text-white hover:bg-blue-700'
                         }
                       `}
                     >
@@ -382,7 +411,9 @@ export default function CourseDetails() {
                           ? enrollmentStatus === 'pending'
                             ? 'Application Submitted. Awaiting Approval'
                             : 'Enrolled'
-                          : 'Apply for Course'}
+                          : hasPendingApplication
+                            ? 'Paid. Awaiting Confirmation'
+                            : 'Apply for Course'}
                     </button>
                   </>
                 ) : (
