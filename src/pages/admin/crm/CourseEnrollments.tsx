@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../../../lib/supabase';
 import { Check, Search, Clock, BookOpen, AlertCircle, Filter, ChevronDown, X } from 'lucide-react';
 import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import UserAvatar from '../../../components/UserAvatar';
 
 interface Enrollment {
@@ -28,7 +28,7 @@ export default function CourseEnrollments() {
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [activeTab, setActiveTab] = useState<'pending' | 'confirmed'>('pending');
+  const navigate = useNavigate();
   const [updating, setUpdating] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -37,7 +37,7 @@ export default function CourseEnrollments() {
 
   useEffect(() => {
     fetchEnrollments();
-  }, [activeTab]);
+  }, []);
 
   async function fetchEnrollments() {
     try {
@@ -57,11 +57,11 @@ export default function CourseEnrollments() {
           ),
           course:course_id (
             id,
-            title,
+            title, 
             level
           )
         `)
-        .eq('status', activeTab)
+        .eq('status', 'confirmed')
         .order('enrolled_at', { ascending: false });
 
       if (error) throw error;
@@ -144,11 +144,11 @@ export default function CourseEnrollments() {
   return (
     <div className="space-y-6">
       <div className="bg-white p-6 rounded-lg shadow-sm">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Course Enrollments</h1>
             <p className="text-sm text-gray-500 mt-1">
-              Manage student enrollments in courses
+              View and manage confirmed course enrollments
             </p>
           </div>
           <div className="relative w-full sm:w-64">
@@ -163,46 +163,22 @@ export default function CourseEnrollments() {
           </div>
         </div>
 
-        {/* Tabs */}
-        <div className="border-b border-gray-200 mb-6">
-          <nav className="flex -mb-px">
-            <button
-              onClick={() => setActiveTab('pending')}
-              className={`mr-8 py-4 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'pending'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Pending Enrollments
-            </button>
-            <button
-              onClick={() => setActiveTab('confirmed')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'confirmed'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              Confirmed Enrollments
-            </button>
-          </nav>
-        </div>
-
         {/* Notifications */}
-        {error && (
+        <div className="mt-6">
+          {error && (
           <div className="mb-4 p-4 bg-red-50 rounded-md flex items-center text-red-700">
             <AlertCircle className="h-5 w-5 mr-2 flex-shrink-0" />
             <p className="text-sm">{error}</p>
           </div>
-        )}
+          )}
 
-        {success && (
+          {success && (
           <div className="mb-4 p-4 bg-green-50 rounded-md flex items-center text-green-700">
             <Check className="h-5 w-5 mr-2 flex-shrink-0" />
             <p className="text-sm">{success}</p>
           </div>
-        )}
+          )}
+        </div>
 
         {loading ? (
           <div className="flex items-center justify-center h-64">
@@ -212,11 +188,9 @@ export default function CourseEnrollments() {
         ) : filteredEnrollments.length === 0 ? (
           <div className="text-center py-16 bg-gray-50 rounded-lg">
             <BookOpen className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-lg font-medium text-gray-900">No {activeTab} enrollments</h3>
+            <h3 className="mt-2 text-lg font-medium text-gray-900">No confirmed enrollments</h3>
             <p className="mt-1 text-sm text-gray-500">
-              {activeTab === 'pending' 
-                ? "There are no pending course enrollments at the moment."
-                : "There are no confirmed course enrollments matching your search."}
+              There are no confirmed course enrollments matching your search.
             </p>
           </div>
         ) : (
@@ -257,11 +231,6 @@ export default function CourseEnrollments() {
                   <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Status
                   </th>
-                  {activeTab === 'pending' && (
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Actions
-                    </th>
-                  )}
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -310,30 +279,9 @@ export default function CourseEnrollments() {
                         px-2 py-1 text-xs rounded-full
                         ${enrollment.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}
                       `}>
-                        {enrollment.status === 'pending' ? 'Pending' : 'Confirmed'}
+                        Confirmed
                       </span>
                     </td>
-                    {activeTab === 'pending' && (
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <button
-                          onClick={() => confirmEnrollment(enrollment.id)}
-                          disabled={updating === enrollment.id}
-                          className="inline-flex items-center px-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-                        >
-                          {updating === enrollment.id ? (
-                            <>
-                              <div className="animate-spin rounded-full h-4 w-4 border-2 border-white mr-2"></div>
-                              Processing...
-                            </>
-                          ) : (
-                            <>
-                              <Check className="w-4 h-4 mr-1" />
-                              Confirm
-                            </>
-                          )}
-                        </button>
-                      </td>
-                    )}
                   </tr>
                 ))}
               </tbody>

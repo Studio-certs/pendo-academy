@@ -134,10 +134,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      if (error) {
+        // Check if this is an expected "session missing" error
+        if (error.message === 'Auth session missing!' || 
+            error.message.includes('session_not_found') ||
+            error.message.includes('Session from session_id claim in JWT does not exist')) {
+          // Log as warning for expected session-missing scenarios
+          console.warn('Sign out attempted with missing session:', error.message);
+        } else {
+          // Log as error for unexpected issues
+          console.error('Unexpected error during sign out:', error);
+        }
+      }
     } catch (error: any) {
-      console.error('Error signing out:', error);
+      // Handle any other unexpected errors
+      if (error.message === 'Auth session missing!' || 
+          error.message.includes('session_not_found') ||
+          error.message.includes('Session from session_id claim in JWT does not exist')) {
+        console.warn('Sign out attempted with missing session:', error.message);
+      } else {
+        console.error('Unexpected error during sign out:', error);
+      }
     } finally {
+      // Always clean up local state regardless of server response
       setUser(null);
       setIsAdmin(false);
     }
