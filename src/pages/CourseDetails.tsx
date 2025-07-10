@@ -41,13 +41,15 @@ interface ContentItem {
   order_index: number;
 }
 
+type EnrollmentStatus = 'pending' | 'confirmed';
+
 export default function CourseDetails() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [course, setCourse] = useState<Course | null>(null);
   const [modules, setModules] = useState<Module[]>([]);
-  const [isEnrolled, setIsEnrolled] = useState(false);
+  const [enrollmentStatus, setEnrollmentStatus] = useState<EnrollmentStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [enrolling, setEnrolling] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -58,6 +60,8 @@ export default function CourseDetails() {
     averageProgress: 0,
     completionRate: 0
   });
+
+  const isEnrolled = !!enrollmentStatus;
 
   useEffect(() => {
     async function fetchCourseData() {
@@ -97,15 +101,16 @@ export default function CourseDetails() {
         // Fetch enrollment stats
         const { data: enrollments, error: enrollmentsError } = await supabase
           .from('course_enrollments')
-          .select('progress')
+          .select('progress, status')
           .eq('course_id', id);
 
         if (!enrollmentsError && enrollments) {
-          const totalEnrolled = enrollments.length;
+          const confirmedEnrollments = enrollments.filter(e => e.status === 'confirmed');
+          const totalEnrolled = confirmedEnrollments.length;
           const avgProgress = totalEnrolled > 0
-            ? enrollments.reduce((acc, curr) => acc + (curr.progress || 0), 0) / totalEnrolled
+            ? confirmedEnrollments.reduce((acc, curr) => acc + (curr.progress || 0), 0) / totalEnrolled
             : 0;
-          const completions = enrollments.filter(e => e.progress === 100).length;
+          const completions = confirmedEnrollments.filter(e => e.progress === 100).length;
           const completionRate = totalEnrolled > 0 ? (completions / totalEnrolled) * 100 : 0;
 
           setEnrollmentStats({
@@ -120,7 +125,7 @@ export default function CourseDetails() {
           const [enrollmentResponse, walletResponse] = await Promise.all([
             supabase
               .from('course_enrollments')
-              .select('*')
+              .select('status')
               .eq('course_id', id)
               .eq('user_id', user.id)
               .maybeSingle(),
@@ -131,7 +136,7 @@ export default function CourseDetails() {
               .maybeSingle()
           ]);
 
-          setIsEnrolled(!!enrollmentResponse.data);
+          setEnrollmentStatus(enrollmentResponse.data?.status || null);
           setUserTokens(walletResponse.data?.tokens || 0);
         }
       } catch (error) {
@@ -152,12 +157,11 @@ export default function CourseDetails() {
     setError(null);
     try {
       if (isEnrolled) {
-        setError('You cannot unenroll from a course once enrolled');
+        setError('You are already enrolled or your enrollment is pending.');
         return;
       }
 
       if (userTokens < course.price) {
-        // Instead of showing error, redirect to buy tokens page
         navigate('/buy-tokens');
         return;
       }
@@ -175,20 +179,16 @@ export default function CourseDetails() {
         .insert({
           course_id: course.id,
           user_id: user.id,
-          progress: 0
+          progress: 0,
+          status: 'pending' // Set status to pending on new enrollment
         });
 
       if (enrollmentError) throw enrollmentError;
 
-      setIsEnrolled(true);
+      setEnrollmentStatus('pending');
       setUserTokens(prev => prev - course.price);
-      setSuccess('Successfully enrolled in the course!');
+      setSuccess('Enrollment successful! Awaiting confirmation.');
       
-      // Update enrollment stats
-      setEnrollmentStats(prev => ({
-        ...prev,
-        totalEnrolled: prev.totalEnrolled + 1
-      }));
     } catch (error: any) {
       console.error('Error during enrollment:', error);
       setError(error.message || 'Failed to enroll in course');
@@ -331,7 +331,7 @@ export default function CourseDetails() {
                     }`}
                   >
                     <div
-                      className={`p-4 cursor-pointer ${!isEnrolled ? 'opacity-75' : ''}`}
+                      className={`p-4 ${isEnrolled ? 'cursor-pointer' : 'opacity-75'}`}
                       onClick={() => {
                         if (isEnrolled) {
                           navigate(`/courses/${course.id}/modules/${module.id}`);
@@ -399,19 +399,24 @@ export default function CourseDetails() {
                       disabled={enrolling || isEnrolled}
                       className={`
                         w-full py-3 px-4 rounded-lg font-medium text-center
-                        ${isEnrolled
-                          ? 'bg-green-600 text-white cursor-not-allowed'
-                          : 'bg-blue-600 text-white hover:bg-blue-700'
-                        }
-                        disabled:opacity-50 disabled:cursor-not-allowed
                         transition-colors duration-200
+                        disabled:opacity-70 disabled:cursor-not-allowed
+                        ${
+                          isEnrolled
+                            ? enrollmentStatus === 'pending'
+                              ? 'bg-yellow-500 text-white'
+                              : 'bg-green-600 text-white'
+                            : 'bg-blue-600 text-white hover:bg-blue-700'
+                        }
                       `}
                     >
                       {enrolling
                         ? 'Processing...'
                         : isEnrolled
-                        ? 'Enrolled'
-                        : 'Enroll in Course'}
+                          ? enrollmentStatus === 'pending'
+                            ? 'Paid. Awaiting Confirmation'
+                            : 'Enrolled'
+                          : 'Enroll in Course'}
                     </button>
                   </>
                 ) : (
