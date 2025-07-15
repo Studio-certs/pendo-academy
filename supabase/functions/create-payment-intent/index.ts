@@ -80,7 +80,8 @@ Deno.serve(async (req) => {
     console.log('Found token type:', tokenType);
 
     // Calculate tokens based on conversion rate
-    const tokens = Math.round(amount * tokenType.conversion_rate);
+    const tokens = amount;
+    const amountInCurrency = Math.round(amount / tokenType.conversion_rate * 100) / 100; // Convert to currency with 2 decimal places
 
     // Get Stripe key from environment variable
     const stripeKey = Deno.env.get('STRIPE_SECRET_KEY');
@@ -100,12 +101,12 @@ Deno.serve(async (req) => {
       line_items: [
         {
           price_data: {
-            currency: 'aud',
+            currency: 'aud', 
             product_data: {
               name: tokenType.name,
               description: `${tokens} ${tokenType.name}`,
             },
-            unit_amount: amount * 100, // Convert to cents
+            unit_amount: Math.round(amountInCurrency * 100), // Convert to cents
           },
           quantity: 1,
         },
@@ -115,7 +116,7 @@ Deno.serve(async (req) => {
       cancel_url: `${req.headers.get('origin')}/buy-tokens`,
       metadata: {
         user_id,
-        tokens: tokens.toString(),
+        tokens: tokens.toString(), 
         token_type_id
       },
     });

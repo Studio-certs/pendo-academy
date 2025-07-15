@@ -100,7 +100,7 @@ export default function BuyTokens() {
           'Authorization': `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
-          amount,
+          amount: amount / (selectedTokenType?.conversion_rate || 1), // Convert tokens back to actual currency amount
           user_id: user.id,
           token_type_id: selectedTokenType.id
         }),
@@ -258,7 +258,7 @@ export default function BuyTokens() {
             ) : (
               <>
                 <CreditCard className="w-5 h-5 mr-2" />
-                Purchase {amount} {selectedTokenType?.name || 'Tokens'} for ${amount / (selectedTokenType?.conversion_rate || 1)} AUD
+                Purchase {amount} {selectedTokenType?.name || 'Tokens'} for ${(amount / (selectedTokenType?.conversion_rate || 1)).toFixed(2)} AUD
               </>
             )}
           </button>
