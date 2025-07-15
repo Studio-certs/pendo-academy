@@ -20,10 +20,10 @@ Deno.serve(async (req) => {
 
   try {
     // Get request body
-    const { amount, user_id, token_type_id } = await req.json();
+    const { amount, user_id, token_type_id, tokens } = await req.json();
 
     // Log incoming request data
-    console.log('Request data:', { amount, user_id, token_type_id });
+    console.log('Request data:', { amount, user_id, token_type_id, tokens });
 
     // Validate required parameters
     if (!amount || !user_id || !token_type_id) {
@@ -79,9 +79,8 @@ Deno.serve(async (req) => {
     const tokenType = tokenTypes[0];
     console.log('Found token type:', tokenType);
 
-    // Calculate tokens based on conversion rate
-    const tokens = Math.round(amount * tokenType.conversion_rate);
-    const amountInCurrency = amount; // The amount is already in currency
+    // Use provided tokens or calculate if not provided
+    const tokenAmount = tokens || Math.round(amount * tokenType.conversion_rate);
 
     // Get Stripe key from environment variable
     const stripeKey = Deno.env.get('STRIPE_SECRET_KEY');
@@ -103,10 +102,10 @@ Deno.serve(async (req) => {
           price_data: {
             currency: 'aud', 
             product_data: {
-              name: tokenType.name,
-              description: `${tokens} ${tokenType.name} (${tokenType.conversion_rate} tokens per $)`,
+              name: `${tokenAmount} ${tokenType.name}`,
+              description: `${tokenAmount} ${tokenType.name} (${tokenType.conversion_rate} tokens per $)`,
             },
-            unit_amount: Math.round(amountInCurrency * 100), // Convert to cents
+            unit_amount: Math.round(amount * 100), // Convert to cents
           },
           quantity: 1,
         },
@@ -116,7 +115,7 @@ Deno.serve(async (req) => {
       cancel_url: `${req.headers.get('origin')}/buy-tokens`,
       metadata: {
         user_id,
-        tokens: tokens.toString(), 
+        tokens: tokenAmount.toString(), 
         token_type_id
       },
     });

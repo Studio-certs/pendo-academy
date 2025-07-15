@@ -70,19 +70,22 @@ export default function BuyTokens() {
   };
 
   const getTokenPackages = (conversionRate: number): TokenPackage[] => [
-    { amount: 10, label: 'Starter', description: 'Perfect for trying out our platform', icon: Zap },
-    { amount: 50, label: 'Basic', description: 'Most popular for beginners', icon: Shield, featured: true },
-    { amount: 100, label: 'Pro', description: 'Great value for active learners', icon: Gift },
-    { amount: 150, label: 'Elite', description: 'Ideal for dedicated students', icon: CreditCard },
-    { amount: 200, label: 'Premium', description: 'Best value for serious learners', icon: CheckCircle2 },
-    { amount: 250, label: 'Ultimate', description: 'Maximum learning potential', icon: Wallet }
+    { amount: 10, label: 'Starter', description: 'Perfect for trying out our platform', icon: Zap, tokens: 10 * conversionRate },
+    { amount: 50, label: 'Basic', description: 'Most popular for beginners', icon: Shield, featured: true, tokens: 50 * conversionRate },
+    { amount: 100, label: 'Pro', description: 'Great value for active learners', icon: Gift, tokens: 100 * conversionRate },
+    { amount: 150, label: 'Elite', description: 'Ideal for dedicated students', icon: CreditCard, tokens: 150 * conversionRate },
+    { amount: 200, label: 'Premium', description: 'Best value for serious learners', icon: CheckCircle2, tokens: 200 * conversionRate },
+    { amount: 250, label: 'Ultimate', description: 'Maximum learning potential', icon: Wallet, tokens: 250 * conversionRate }
   ].map(pkg => ({
     ...pkg,
-    amount: Math.round(pkg.amount * conversionRate)
+    tokens: Math.round(pkg.tokens)
   }));
 
   const handlePurchase = async () => {
     if (!user || !selectedTokenType) return;
+
+    // Calculate tokens based on amount and conversion rate
+    const tokens = Math.round(amount * selectedTokenType.conversion_rate);
 
     try {
       setLoading(true);
@@ -102,7 +105,8 @@ export default function BuyTokens() {
         body: JSON.stringify({
           amount: amount,
           user_id: user.id,
-          token_type_id: selectedTokenType.id
+          token_type_id: selectedTokenType.id,
+          tokens: tokens
         }),
       });
 
@@ -220,8 +224,8 @@ export default function BuyTokens() {
                   <pkg.icon className={`w-8 h-8 ${amount === pkg.amount ? 'text-blue-500' : 'text-gray-400'}`} />
                 </div>
                 <div className="mt-4">
-                  <p className="text-3xl font-bold text-gray-900">{pkg.amount} <span className="text-lg font-normal text-gray-500">tokens</span></p>
-                  <p className="text-gray-500">${pkg.amount / (selectedTokenType?.conversion_rate || 1)} AUD</p>
+                  <p className="text-3xl font-bold text-gray-900">{pkg.tokens} <span className="text-lg font-normal text-gray-500">tokens</span></p>
+                  <p className="text-gray-500">${pkg.amount.toFixed(2)} AUD</p>
                 </div>
               </div>
             </div>
@@ -258,7 +262,7 @@ export default function BuyTokens() {
             ) : (
               <>
                 <CreditCard className="w-5 h-5 mr-2" />
-                Purchase {amount} {selectedTokenType?.name || 'Tokens'} for ${(amount / (selectedTokenType?.conversion_rate || 1)).toFixed(2)} AUD
+                Purchase {Math.round(amount * selectedTokenType.conversion_rate)} {selectedTokenType?.name || 'Tokens'} for ${amount.toFixed(2)} AUD
               </>
             )}
           </button>
