@@ -262,7 +262,7 @@ export default function BuyTokens() {
             ) : (
               <>
                 <CreditCard className="w-5 h-5 mr-2" />
-                Purchase {Math.round(amount * selectedTokenType.conversion_rate)} {selectedTokenType?.name || 'Tokens'} for ${amount.toFixed(2)} AUD
+                Purchase {Math.round(amount * (selectedTokenType?.conversion_rate || 0))} {selectedTokenType?.name || 'Tokens'} for ${amount.toFixed(2)} AUD
               </>
             )}
           </button>
