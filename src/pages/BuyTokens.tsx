@@ -100,7 +100,7 @@ export default function BuyTokens() {
           'Authorization': `Bearer ${session.access_token}`,
         },
         body: JSON.stringify({
-          amount: amount / (selectedTokenType?.conversion_rate || 1), // Convert tokens back to actual currency amount
+          amount: amount,
           user_id: user.id,
           token_type_id: selectedTokenType.id
         }),
