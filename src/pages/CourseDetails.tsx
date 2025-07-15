@@ -65,6 +65,21 @@ export default function CourseDetails() {
     completionRate: 0
   });
 
+  // Auto-dismiss notifications after 5 seconds
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => setSuccess(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
+
   const isEnrolled = !!enrollmentStatus;
   const hasPendingApplication = application?.status === 'pending';
 

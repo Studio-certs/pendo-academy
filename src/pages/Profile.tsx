@@ -74,6 +74,28 @@ export default function Profile() {
   const [activeTab, setActiveTab] = useState<'overview' | 'courses' | 'badges'>('overview');
   const [showShareTooltip, setShowShareTooltip] = useState(false);
 
+  // Auto-dismiss notifications after 5 seconds
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => setSuccess(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
+
+  useEffect(() => {
+    if (showShareTooltip) {
+      const timer = setTimeout(() => setShowShareTooltip(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showShareTooltip]);
+
   useEffect(() => {
     if (sessionId && user) {
       // Handle successful payment

@@ -34,6 +34,21 @@ export default function BadgeManagement() {
   const [searchTerm, setSearchTerm] = useState('');
   const [assignedUsers, setAssignedUsers] = useState<Set<string>>(new Set());
 
+  // Auto-dismiss notifications after 5 seconds
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => setSuccess(null), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [success]);
+
   useEffect(() => {
     fetchBadges();
   }, []);
