@@ -348,6 +348,18 @@ export default function TermsAndConditions() {
 
             <h2 className="text-xl font-semibold mt-6 mb-3">Legal Disclaimer</h2>
             <p>
+              Pendo Academy is an education and training platform. We provide general information, job-ready access to programs, and resources to assist individuals in getting into the workforce. While our content may reference legal, financial, or training programs, it is provided for educational purposes only and does not constitute financial, legal, tax, or business advice.
+            </p>
+            <p>
+              We do not hold a Registered Training Organisation (RTO) or Australian Financial Services Licence (AFSL) and do not provide personalised financial advice. All information is general in nature and should not be relied upon without obtaining independent professional advice.
+            </p>
+            <p>
+              Training outcomes vary and are subject to numerous factors, including the nature of your study, financial obligations to the RTO partners, RTO terms, and your personal circumstances. While we teach strategies aimed at reducing entry barriers into the workforce, challenges to completion of the programs are uncommon and personal success is not guaranteed.
+            </p>
+            <p>
+              Past performance is not indicative of future results. We do not guarantee any particular outcome. Always seek advice from a qualified education agent, accountant, solicitor, or financial advisor before proceeding with any training courses.
+            </p>
+            <p>
               This website is subject to the laws of Australia, and any disputes arising from its use
               will be exclusively adjudicated by Australian courts.
             </p>
