@@ -2,7 +2,13 @@
 // See https://stripe.com/docs/payments/quickstart for more information.
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+// Get Stripe key from environment variable
+    const stripeKey = Deno.env.get('STRIPE_SECRET_KEY');
+    if (!stripeKey) {
+      throw new Error('Stripe key not configured');
+    }
+
+const stripe = new Stripe(stripeKey || '', {
   apiVersion: '2023-10-16',
 });
 
